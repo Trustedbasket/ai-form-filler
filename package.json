@@ -21,8 +21,7 @@
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "sharp": "^0.33.2"
-  }
-}
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
