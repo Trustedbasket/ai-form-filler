@@ -37,14 +37,17 @@ const { createClient } = require('@supabase/supabase-js');
 // ============================================================================
 // PART 1 & PART 2 MODULE IMPORTS (Assumed in the same directory)
 // ============================================================================
-const { CryptoVaultService } = require('./CryptoVault');
-const { createAuditLoggerMiddleware, extractClientIp } = require('./AuditLogger');
-const { createNotificationService } = require('./NotificationService');
-const { JobRequirementService } = require('./JobRequirementService');
-const { FormFillerQueueWorker } = require('./QueueWorker');
-const { DOMCleanerAndMapper } = require('./DOMCleanerAndMapper');
-const { JITMemoryEngine } = require('./JITMemoryEngine');
-const { LiveHandoffProxy } = require('./LiveHandoffProxy');
+// ============================================================================
+// PART 1 & PART 2 MODULE IMPORTS (Assumed in the same directory)
+// ============================================================================
+const { CryptoVaultService } = require('./cryptovault');
+const { createAuditLoggerMiddleware, extractClientIp } = require('./auditlogger');
+const { createNotificationService } = require('./notificationservice');
+const { JobRequirementService } = require('./jobrequirementservice');
+const { FormFillerQueueWorker } = require('./queueworker');
+const { DOMCleanerAndMapper } = require('./domcleanerandmapper');
+const { JITMemoryEngine } = require('./jitmemoryengine');
+const { LiveHandoffProxy } = require('./livehandoffproxy');
 
 // ============================================================================
 // CONSTANTS & MEMORY PROTECTION LIMITS
