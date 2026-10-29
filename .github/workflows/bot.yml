@@ -1,0 +1,54 @@
+name: Automated AI Form Filler Background Worker
+
+on:
+  # 1. Scheduled Trigger: Runs every 15 minutes to poll and drain the Redis queue
+  schedule:
+    - cron: '*/15 * * * *'
+
+  # 2. Manual & REST API Trigger: Allows on-demand triggering via GitHub UI or API
+  workflow_dispatch:
+    inputs:
+      task_id:
+        description: 'Optional Task ID to prioritize or process immediately'
+        required: false
+        default: ''
+
+# Prevent overlapping worker runs from competing for the same queue locks if a batch takes >15 mins
+concurrency:
+  group: form-filler-queue-worker
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  run-queue-worker:
+    name: Execute Node.js Queue Worker
+    runs-on: ubuntu-latest
+    # Safety timeout so a hung browser session never consumes your GitHub Actions quota indefinitely
+    timeout-minutes: 14
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js v18 with Dependency Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Dependencies & Chromium System Libraries (Puppeteer/Sharp)
+        run: |
+          npm install
+
+      - name: Execute Background Queue Worker
+        env:
+          NODE_ENV: production
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          DISPATCH_TASK_ID: ${{ github.event.inputs.task_id }}
+        run: node queueworker.js
+        
