@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
+          
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
