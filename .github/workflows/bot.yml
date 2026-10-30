@@ -36,7 +36,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+          # cache: 'npm'  # <-- Ise comment kar diya hai taaki package-lock.json wala error na aaye
 
       - name: Install Dependencies & Chromium System Libraries (Puppeteer/Sharp)
         run: |
@@ -51,4 +51,3 @@ jobs:
           REDIS_URL: ${{ secrets.REDIS_URL }}
           DISPATCH_TASK_ID: ${{ github.event.inputs.task_id }}
         run: node queueworker.js
-        
